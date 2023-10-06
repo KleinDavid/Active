@@ -1,9 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Dynamic;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace Active.App.Action
+﻿namespace Active.App.Action
 {
     public abstract class ClientAction : Action
     {
