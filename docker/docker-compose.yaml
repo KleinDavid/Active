@@ -1,0 +1,40 @@
+version: '3.6'
+
+services:
+
+  mssql:
+    restart: always
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: root
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "V<gu-TmwAjY}_td9W?S{E#B"
+      SA_PASSWORD: "V<gu-TmwAjY}_td9W?S{E#B"
+      MSSQL_PID: "Express"
+    volumes:
+      - ./data:/var/opt/mssql/data
+  
+  action-parser:
+    restart: always
+    build:
+      context: ../action-parser
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5000"
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4000"
+  
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4201:4200"
+      
