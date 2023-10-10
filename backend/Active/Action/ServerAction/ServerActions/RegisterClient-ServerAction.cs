@@ -1,4 +1,4 @@
-﻿namespace Active.App.Action
+﻿namespace Active.App.Act
 {
     public class RegisterClient_ServerAction : ServerAction
     { 

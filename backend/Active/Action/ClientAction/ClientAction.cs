@@ -1,9 +1,9 @@
-﻿namespace Active.App.Action
+﻿namespace Active.App.Act
 {
     public abstract class ClientAction : Action
     {
-        public static Type TransportModelType = typeof(ClientAction_Transport);
         public ClientAction(string id) : base(id) {
+            TransportModelType = typeof(ClientAction_Transport);
         }
 
         

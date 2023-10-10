@@ -1,18 +1,18 @@
 using AutoMapper;
 
-namespace Active.App.Action
+namespace Active.App.Act
 {
     public class Action
     {
-        public static Type TransportModelType = typeof(Action_Transport);
+        public Type TransportModelType = typeof(Action_Transport);
+        public Type ActionType = typeof(Action);
         public string Id { get; }
         public string TypeName { get; set; }
-        public Action_Transport TransportModel;
 
         public Action(string id) {
-            Id = id + Guid.NewGuid().ToString();
+            Id = id + "_" + Guid.NewGuid().ToString();
+            ActionType = GetType();
             TypeName = GetType().Name!;
-            TransportModel = new Action_Transport();
         }
 
         public Dictionary<string, object> execute()
@@ -22,25 +22,7 @@ namespace Active.App.Action
 
         public Dictionary<string, object> GetTransportModel()
         {
-            var method = typeof(Action).GetMethod("MapTransportModel")!;
-            var methodRef = method.MakeGenericMethod(TransportModelType);
-            var action = methodRef.Invoke(this, null)!;
-            var res = new Dictionary<string, object>();
-            res[TypeName] = action;
-            return res;
-        }
-
-        protected T MapTransportModel<T>() where T : Action_Transport
-        {
-            var transport = (T)Activator.CreateInstance(typeof(T), new object[] {})!;
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<Action, T>();
-            });
-
-            IMapper mapper = config.CreateMapper();
-            transport = mapper.Map<Action, T> (this);
-
-            return transport;
+            return ActionToTransportMapper.GetTransportModel(this, ActionType, TransportModelType);
         }
 
     }

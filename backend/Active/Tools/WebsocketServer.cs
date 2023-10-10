@@ -1,15 +1,17 @@
-using Active.App.Action;
+using Active.App.Act;
 using Active.App.Models;
 using Newtonsoft.Json;
 using System.Net;
 using WebSocketSharp;
 using WebSocketSharp.Server;
+using NLog;
 
 namespace Tools {
-    public class WebSocketServer : WebSocketBehavior
-{
+    public class WebSocketServer : WebSocketBehavior {
 
-    public event EventHandler MessageReceived; 
+        protected static NLog.Logger Log = LogManager.GetLogger("");
+
+        public event EventHandler MessageReceived; 
     public void run()
     {
         var ip = "127.0.0.1";
@@ -18,14 +20,14 @@ namespace Tools {
         httpsv.AddWebSocketService<WebSocketServer>("/");
         httpsv.Start();
 
-        Console.WriteLine("WebSocket server is listening on " + ip + ":" + port);
+        Log.Debug("WebSocket server is listening on " + ip + ":" + port);
         Console.ReadKey(true);
 
         httpsv.Stop();
     }
     protected override void OnMessage(MessageEventArgs e)
     {
-        Console.WriteLine("Received message: " + e.Data);
+        Log.Debug("Received message: " + e.Data);
         dynamic data = JsonConvert.DeserializeObject(e.Data);
 
         MessageReceived?.Invoke(this, data);

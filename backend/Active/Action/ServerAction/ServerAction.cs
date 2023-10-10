@@ -1,6 +1,6 @@
-using Active.App.Action;
+using Active.App.Act;
 
-namespace Active.App.Action
+namespace Active.App.Act
 {
     public class ServerAction : Action
     {
